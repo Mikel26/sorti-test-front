@@ -1,0 +1,59 @@
+<div>
+    <h2>
+        LISTA DE TAREAS
+    </h2>
+    <input [(ngModel)]="newTitle" type="text" placeholder="Título">
+    &nbsp;
+    <input [(ngModel)]="newTask" type="text" placeholder="Tarea">
+    &nbsp;
+    <button (click)="addTask()">Agregar Tarea</button>
+    &nbsp;
+    <button (click)="viewTrash()">Historial</button>
+</div>
+<table *ngIf="tasks.length > 0">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th style="width: 10%;">Completada</th>
+            <th style="width: 30%;">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let task of tasks; let idx = index">
+            <td [class.completed]="task.estado">
+                <ng-container *ngIf="task.edit; else elseTitulo">
+                    <input type="text" [(ngModel)]="task.titulo">
+                </ng-container>
+                <ng-template #elseTitulo>
+                    {{ task.titulo }}
+                </ng-template>
+            </td>
+
+            <td [class.completed]="task.estado">
+                <ng-container *ngIf="task.edit; else elseDescripcion">
+                    <input type="text" [(ngModel)]="task.descripcion">
+                </ng-container>
+                <ng-template #elseDescripcion>
+                    {{ task.descripcion }}
+                </ng-template>
+            </td>
+
+            <td style="text-align: center;">
+                <input type="checkbox" [checked]="task.estado" (click)="completeTask(task)" [(ngModel)]="task.estado">
+            </td>
+            <td style="text-align: center;">
+                <ng-container *ngIf="task.edit; else elseEdit">
+                    <button (click)="saveEdit(task, idx)" [disabled]="task.estado">Guardar</button>
+                    <!-- <input type="checkbox" [checked]="task.estado" (click)="completeTask(task)" [(ngModel)]="task.estado"> -->
+                </ng-container>
+                <ng-template #elseEdit>
+                    <button (click)="editTask(idx)" [disabled]="task.estado">Editar</button>
+                </ng-template>
+
+                &nbsp;
+                <button (click)="removeTask(task, idx)">Quitar</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

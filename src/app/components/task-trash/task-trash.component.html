@@ -1,0 +1,38 @@
+<div>
+    <h2>
+        HISTORIAL DE TAREAS
+    </h2>
+    <button (click)="back()">
+        Volver
+    </button>
+</div>
+<table *ngIf="tasks.length > 0">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th style="width: 10%;">Completada</th>
+            <th style="width: 30%;">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let task of tasks; let idx = index">
+            <td>
+                {{ task.titulo }}
+            </td>
+
+            <td>
+                {{ task.descripcion }}
+            </td>
+
+            <td style="text-align: center;">
+                <input type="checkbox" [checked]="task.estado" disabled [(ngModel)]="task.estado">
+            </td>
+            <td style="text-align: center;">
+                <button (click)="recoverTask(task, idx)">Restaurar</button>
+                &nbsp;
+                <button (click)="deleteTask(task, idx)">Borrar</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
